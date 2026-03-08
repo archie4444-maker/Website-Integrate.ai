@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integrate.AI — AI Workflow Consultancy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #04070d;
+      --bg2:       #080c15;
+      --card:      #0b0f1a;
+      --border:    rgba(255,255,255,0.07);
+      --text:      #ffffff;
+      --muted:     #8a8faa;
+      --accent:    #0d9488;
+      --purple:    #2dd4bf;
+      --bar-start: rgba(13,148,136,0.6);
+      --bar-end:   rgba(13,148,136,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(91,99,245,0.4); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 66px; padding: 0 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(4,7,13,0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.3s;
+    }
+    .logo { font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 700; color: #fff; text-decoration: none; letter-spacing: -0.3px; }
+    .logo em { font-style: normal; color: var(--accent); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 13.5px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-btn {
+      font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 600;
+      background: var(--accent); color: #fff; padding: 9px 20px; border-radius: 8px;
+      text-decoration: none; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav-btn:hover { background: color-mix(in srgb, var(--accent) 80%, black); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 56px 80px; overflow: hidden;
+    }
+    .orb { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(120px); animation: slow-drift 20s ease-in-out infinite; }
+    .orb-a { width: 700px; height: 700px; top: -180px; left: -180px; background: radial-gradient(circle, rgba(13,148,136,0.13), transparent 65%); animation-delay: 0s; }
+    .orb-b { width: 580px; height: 580px; bottom: -140px; right: -140px; background: radial-gradient(circle, rgba(45,212,191,0.09), transparent 65%); animation-delay: -10s; }
+    .orb-c { width: 420px; height: 420px; top: 45%; left: 58%; background: radial-gradient(circle, rgba(13,200,170,0.06), transparent 65%); animation-delay: -5s; }
+    @keyframes slow-drift { 0%,100%{transform:translate(0,0)} 33%{transform:translate(20px,-20px)} 66%{transform:translate(-14px,16px)} }
+
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%);
+    }
+
+    /* ── HERO WAVE LINES ── */
+    .hero-waves { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .wave-line { position: absolute; top: 0; left: 0; width: 200%; height: 100%; animation: wave-drift 24s linear infinite; }
+    .wave-line:nth-child(2) { animation-duration: 32s; animation-delay: -10s; }
+    .wave-line:nth-child(3) { animation-duration: 42s; animation-delay: -21s; }
+    @keyframes wave-drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 880px; }
+
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: rgba(13,148,136,0.1); border: 1px solid rgba(13,148,136,0.28);
+      border-radius: 100px; padding: 7px 18px 7px 14px; margin-bottom: 38px;
+      font-size: 11.5px; font-weight: 700; color: rgba(255,255,255,0.8);
+      letter-spacing: 0.09em; text-transform: uppercase;
+    }
+    .hero-pill-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: dot-pulse 2s ease-in-out infinite; flex-shrink: 0; }
+    @keyframes dot-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.65)} }
+
+    h1 {
+      font-family: 'Figtree', sans-serif; font-size: clamp(44px, 6vw, 76px); font-weight: 900;
+      line-height: 1.04; letter-spacing: -0.04em; margin-bottom: 24px;
+      background: linear-gradient(160deg, #ffffff 0%, #9a9ab8 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    h1 .hi { background: linear-gradient(130deg, var(--accent) 0%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    .hero-sub { font-size: 18px; color: var(--muted); max-width: 540px; margin: 0 auto 48px; line-height: 1.75; font-weight: 400; }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .btn-fill {
+      background: var(--accent); color: #fff; padding: 13px 28px; border-radius: 9px;
+      font-size: 14.5px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; transition: all 0.22s;
+    }
+    .btn-fill:hover { background: color-mix(in srgb, var(--accent) 80%, black); transform: translateY(-2px); }
+    .btn-fill svg { transition: transform 0.2s; }
+    .btn-fill:hover svg { transform: translateX(3px); }
+    .btn-line {
+      background: transparent; color: rgba(255,255,255,0.7); padding: 13px 28px; border-radius: 9px;
+      font-size: 14.5px; font-weight: 500; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.12); transition: all 0.22s;
+    }
+    .btn-line:hover { border-color: rgba(255,255,255,0.25); color: #fff; }
+
+    /* ── TICKER ── (no hover pause) */
+    .ticker-outer { overflow: hidden; background: rgba(13,148,136,0.05); border-top: 1px solid rgba(13,148,136,0.12); border-bottom: 1px solid rgba(13,148,136,0.12); padding: 13px 0; }
+    .ticker-track { display: flex; gap: 0; width: max-content; animation: ticker 40s linear infinite; }
+    .ticker-item { display: flex; align-items: center; gap: 28px; padding: 0 28px; white-space: nowrap; }
+    .ticker-item span { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .ticker-item strong { color: rgba(255,255,255,0.65); font-weight: 600; }
+    .ticker-dot { width: 3px; height: 3px; background: var(--accent); border-radius: 50%; opacity: 0.6; }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── STATS ── */
+    .stats-row {
+      background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 44px 56px; display: flex; justify-content: center; align-items: center; gap: 0;
+    }
+    .stat-cell { flex: 1; max-width: 260px; text-align: center; padding: 0 32px; }
+    .stat-cell + .stat-cell { border-left: 1px solid var(--border); }
+    .stat-num { font-family: 'Figtree', sans-serif; font-size: 40px; font-weight: 900; letter-spacing: -0.04em; color: #fff; line-height: 1; }
+    .stat-num em { font-style: normal; color: var(--accent); }
+    .stat-lbl { font-size: 12.5px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+    .stat-src { font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 4px; }
+
+    /* ── GENERIC ── */
+    .section { padding: 100px 56px; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    h2 { font-family: 'Figtree', sans-serif; font-size: clamp(30px, 4vw, 50px); font-weight: 900; letter-spacing: -0.035em; line-height: 1.08; margin-bottom: 18px; color: #fff; }
+    .body-text { font-size: 16px; color: var(--muted); line-height: 1.82; max-width: 580px; }
+
+    /* ── TOOLS ── */
+    #tools { padding: 72px 56px; background: var(--bg); }
+    #tools .eyebrow { text-align: center; margin-bottom: 32px; }
+    .tools-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 900px; margin: 0 auto; }
+    .tool-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px; padding: 10px 18px;
+      font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,0.7); transition: all 0.2s;
+    }
+    .tool-pill:hover { border-color: rgba(13,148,136,0.35); color: #fff; background: rgba(13,148,136,0.08); }
+    .tool-icon { width: 18px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .tool-note { text-align: center; margin-top: 22px; font-size: 11.5px; color: rgba(255,255,255,0.25); }
+
+    /* ── PROBLEM ── */
+    #problem { background: var(--bg2); }
+    #problem .container { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .bar-list { display: flex; flex-direction: column; gap: 13px; }
+    .bar-row { display: flex; align-items: center; gap: 14px; }
+    .bar-lbl { font-size: 12px; color: var(--muted); width: 148px; text-align: right; flex-shrink: 0; font-weight: 500; }
+    .bar-bg { flex: 1; height: 28px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 5px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 5px; display: flex; align-items: center; padding-left: 10px; font-size: 10.5px; font-weight: 700; color: rgba(255,255,255,0.8); background: linear-gradient(90deg, var(--bar-start), var(--bar-end)); width: 0; transition: width 1.6s cubic-bezier(0.22,1,0.36,1); }
+    .bar-fill.go { width: var(--w); }
+    .chart-note { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 10px; text-align: right; }
+
+    /* ── SERVICES ── */
+    #services { background: var(--bg); }
+    .svc-hdr { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+    .svc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .svc-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 34px 28px; transition: all 0.3s; position: relative; overflow: hidden; }
+    .svc-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(13,148,136,0.06),transparent 55%); opacity:0; transition:opacity 0.3s; }
+    .svc-card:hover { border-color: rgba(13,148,136,0.3); transform: translateY(-4px); box-shadow: 0 20px 56px rgba(0,0,0,0.5); }
+    .svc-card:hover::before { opacity:1; }
+    .svc-ico { width: 44px; height: 44px; border-radius: 11px; background: rgba(13,148,136,0.1); border: 1px solid rgba(13,148,136,0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 22px; position: relative; z-index: 1; }
+    .svc-ico svg { width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .svc-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 9px; position: relative; z-index: 1; }
+    .svc-title { font-family:'Figtree',sans-serif; font-size: 19px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; position: relative; z-index: 1; }
+    .svc-desc { font-size: 13.5px; color: var(--muted); line-height: 1.78; position: relative; z-index: 1; }
+    .svc-result { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+    .svc-result strong { display:block; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent); margin-bottom:4px; }
+    .svc-result span { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+    /* ── PROCESS ── */
+    #process { background: var(--bg2); }
+    #process .container > div:first-child { text-align: center; max-width: 520px; margin: 0 auto 64px; }
+    .steps { display: grid; grid-template-columns: repeat(4,1fr); position: relative; }
+    .steps::before { content:''; position:absolute; top:26px; left:12%; right:12%; height:1px; background:linear-gradient(90deg,transparent,rgba(13,148,136,0.25),rgba(13,148,136,0.45),rgba(13,148,136,0.25),transparent); }
+    .step { text-align: center; padding: 0 18px; }
+    .step-n { width: 52px; height: 52px; border-radius: 50%; background: var(--card); border: 1px solid rgba(13,148,136,0.28); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; font-family:'Figtree',sans-serif; font-size: 16px; font-weight: 900; color: var(--accent); position: relative; z-index: 1; }
+    .step-title { font-family:'Figtree',sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 9px; }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ── BOARD ── */
+    #board { background: var(--bg); }
+    .board-card { background: linear-gradient(135deg, rgba(13,148,136,0.07) 0%, rgba(45,212,191,0.04) 100%); border: 1px solid rgba(13,148,136,0.2); border-radius: 24px; padding: 72px 80px; text-align: center; position: relative; overflow: hidden; }
+    .board-card::before { content:''; position:absolute; top:-80px; left:50%; transform:translateX(-50%); width:500px; height:500px; background:radial-gradient(circle, rgba(13,148,136,0.09) 0%, transparent 70%); pointer-events:none; }
+    .board-card h2 { max-width: 680px; margin: 0 auto 20px; }
+    .board-card .body-text { max-width: 620px; margin: 0 auto; text-align: center; }
+
+    /* ── REVIEWS ── */
+    #reviews { background: var(--bg2); }
+    #reviews .container > div:first-child { text-align: center; max-width: 500px; margin: 0 auto 48px; }
+    .reviews-honest {
+      background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+      padding: 52px 48px; text-align: center; max-width: 640px; margin: 0 auto;
+    }
+    .reviews-honest .eyebrow { margin-bottom: 16px; }
+    .reviews-honest p { font-size: 15.5px; color: var(--muted); line-height: 1.82; margin-bottom: 32px; }
+    .reviews-honest p em { font-style: normal; color: rgba(255,255,255,0.75); }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg); }
+    #about .container { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .cred-pills { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+    .cred-pill { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 100px; padding: 7px 15px; font-size: 12px; color: var(--muted); font-weight: 500; }
+    .about-panel { background: var(--card); border: 1px solid var(--border); border-radius: 22px; padding: 44px; display: flex; align-items: center; justify-content: center; min-height: 320px; position: relative; overflow: hidden; }
+    .panel-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(13,148,136,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.08) 1px, transparent 1px); background-size: 36px 36px; mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%); }
+    .panel-inner { position: relative; z-index: 1; text-align: center; }
+    .panel-qm { font-size: 64px; line-height: 0.7; color: var(--accent); opacity: 0.28; font-family: Georgia, serif; }
+    .panel-text { font-size: 14.5px; color: var(--muted); line-height: 1.78; font-style: italic; margin: 20px 0 16px; max-width: 300px; }
+    .panel-who { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* ── FAQ ── */
+    #faq { background: var(--bg2); }
+    #faq .container { max-width: 720px; }
+    #faq .container > div:first-child { margin-bottom: 48px; }
+    .faq-item { border-top: 1px solid var(--border); }
+    .faq-item:last-child { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 22px 0; background: none; border: none; color: #fff; cursor: pointer; font-family:'Inter',sans-serif; font-size: 15px; font-weight: 600; text-align: left; gap: 20px; transition: color 0.2s; }
+    .faq-q:hover { color: rgba(255,255,255,0.8); }
+    .faq-chevron { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition: all 0.3s; }
+    .faq-chevron svg { width: 12px; height: 12px; stroke: var(--muted); fill: none; stroke-width: 2; stroke-linecap: round; transition: transform 0.3s; }
+    .faq-item.open .faq-chevron svg { transform: rotate(180deg); }
+    .faq-item.open .faq-chevron { background: rgba(13,148,136,0.15); }
+    .faq-a { font-size: 14.5px; color: var(--muted); line-height: 1.8; max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.22,1,0.36,1), padding 0.3s; }
+    .faq-item.open .faq-a { max-height: 400px; padding-bottom: 22px; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); }
+    #contact .container { max-width: 620px; text-align: center; }
+    #contact h2 { margin-bottom: 14px; }
+    #contact .body-text { margin: 0 auto 44px; text-align: center; }
+    .form-box { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 44px; text-align: left; }
+    .form-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .fg { margin-bottom: 14px; }
+    .fg label { display:block; font-size:11px; font-weight:700; color:var(--muted); margin-bottom:7px; text-transform:uppercase; letter-spacing:0.09em; }
+    .fg input, .fg textarea, .fg select { width:100%; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.09); border-radius:8px; padding:12px 14px; color:#fff; font-family:'Inter',sans-serif; font-size:14px; outline:none; transition: border-color 0.2s; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: rgba(13,148,136,0.55); }
+    .fg input::placeholder, .fg textarea::placeholder { color:rgba(255,255,255,0.2); }
+    .fg select { appearance:none; cursor:pointer; }
+    .fg select option { background:#0d1020; }
+    .fg textarea { resize: vertical; }
+    .form-submit { width:100%; background:var(--accent); color:#fff; border:none; border-radius:9px; padding:14px; font-size:15px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; margin-top:6px; transition: all 0.22s; }
+    .form-submit:hover { background: color-mix(in srgb, var(--accent) 80%, black); transform:translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--card); border-top: 1px solid var(--border); padding: 56px 56px 32px; }
+    .ft-inner { max-width: 1120px; margin: 0 auto; }
+    .ft-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:52px; gap:40px; }
+    .ft-brand .logo { font-size:18px; }
+    .ft-brand p { font-size:13px; color:var(--muted); max-width:280px; line-height:1.75; margin-top:10px; }
+    .ft-cols { display:flex; gap:56px; }
+    .ft-col h4 { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); margin-bottom:14px; }
+    .ft-col a { display:block; font-size:13.5px; color:rgba(255,255,255,0.5); text-decoration:none; margin-bottom:10px; transition:color 0.2s; }
+    .ft-col a:hover { color:#fff; }
+    .ft-bottom { border-top:1px solid var(--border); padding-top:26px; display:flex; justify-content:space-between; }
+    .ft-bottom p { font-size:12px; color:rgba(255,255,255,0.3); }
+
+    /* ── REVEAL — re-fires every scroll-down ── */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+
+    /* ── COLOUR SWITCHER ── */
+    #theme-sw {
+      position: fixed; bottom: 24px; right: 24px; z-index: 400;
+      background: rgba(8,12,21,0.92); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 10px 14px;
+      backdrop-filter: blur(16px);
+      display: flex; align-items: center; gap: 11px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    #theme-sw span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.28); }
+    .sw-dots { display: flex; gap: 7px; }
+    .sw-dot {
+      width: 16px; height: 16px; border-radius: 50%; border: 2px solid transparent;
+      cursor: pointer; transition: all 0.18s; outline: none; padding: 0;
+    }
+    .sw-dot:hover { transform: scale(1.22); }
+    .sw-dot.active { border-color: rgba(255,255,255,0.65); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      #hero { padding: 96px 24px 72px; }
+      .hero-sub { font-size: 16px; }
+      .stats-row { flex-wrap: wrap; padding: 32px 24px; }
+      .stat-cell { min-width: 50%; max-width: 50%; border-left: none !important; border-bottom: 1px solid var(--border); padding: 22px 14px; }
+      .stat-cell:nth-child(3), .stat-cell:nth-child(4) { border-bottom: none; }
+      .stat-cell:nth-child(2), .stat-cell:nth-child(4) { border-left: 1px solid var(--border) !important; }
+      #tools { padding: 56px 24px; }
+      .section { padding: 72px 24px; }
+      #problem .container { grid-template-columns: 1fr; gap: 44px; }
+      .bar-lbl { width: 120px; }
+      .svc-hdr { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .steps::before { display: none; }
+      .board-card { padding: 44px 28px; }
+      .reviews-honest { padding: 36px 28px; }
+      #about .container { grid-template-columns: 1fr; gap: 44px; }
+      .form-row2 { grid-template-columns: 1fr; }
+      footer { padding: 44px 24px 24px; }
+      .ft-top { flex-direction: column; }
+      .ft-cols { flex-wrap: wrap; gap: 32px; }
+      .ft-bottom { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">Integrate<em>.AI</em></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">How it works</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-btn">Book a free call</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+  <div class="hero-grid"></div>
+
+  <!-- Animated wave lines -->
+  <div class="hero-waves">
+    <svg class="wave-line" viewBox="0 0 2880 900" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,450 C120,370 240,530 360,450 C480,370 600,530 720,450 C840,370 960,530 1080,450 C1200,370 1320,530 1440,450 C1560,370 1680,530 1800,450 C1920,370 2040,530 2160,450 C2280,370 2400,530 2520,450 C2640,370 2760,530 2880,450" stroke="rgba(255,255,255,0.042)" stroke-width="1.5"/>
+      <path d="M0,620 C160,540 320,700 480,620 C640,540 800,700 960,620 C1120,540 1280,700 1440,620 C1600,540 1760,700 1920,620 C2080,540 2240,700 2400,620 C2560,540 2720,700 2880,620" stroke="rgba(255,255,255,0.022)" stroke-width="1"/>
+    </svg>
+    <svg class="wave-line" viewBox="0 0 2880 900" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,300 C160,220 320,380 480,300 C640,220 800,380 960,300 C1120,220 1280,380 1440,300 C1600,220 1760,380 1920,300 C2080,220 2240,380 2400,300 C2560,220 2720,380 2880,300" stroke="rgba(255,255,255,0.032)" stroke-width="1.2"/>
+      <path d="M0,700 C240,620 480,780 720,700 C960,620 1200,780 1440,700 C1680,620 1920,780 2160,700 C2400,620 2640,780 2880,700" stroke="rgba(255,255,255,0.018)" stroke-width="1"/>
+    </svg>
+    <svg class="wave-line" viewBox="0 0 2880 900" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,520 C180,440 360,600 540,520 C720,440 900,600 1080,520 C1260,440 1440,600 1620,520 C1800,440 1980,600 2160,520 C2340,440 2520,600 2700,520 C2880,440 2880,520 2880,520" stroke="rgba(255,255,255,0.028)" stroke-width="1.3"/>
+    </svg>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-pill">
+      <div class="hero-pill-dot"></div>
+      AI Integration Consultancy &nbsp;·&nbsp; Oxford, UK
+    </div>
+    <h1>
+      Every job is made<br>
+      up of tasks. Some of those<br>tasks should be done by <span class="hi">AI.</span>
+    </h1>
+    <p class="hero-sub">
+      We show your team which ones — and how to automate them.<br>
+      So they can spend their time on the work that actually matters.
+    </p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-fill">
+        Book a free 30-min call
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#services" class="btn-line">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER — always moving, no hover pause -->
+<div class="ticker-outer">
+  <div class="ticker-track">
+    <div class="ticker-item">
+      <span><strong>AI Fluency Training</strong></span><div class="ticker-dot"></div>
+      <span>Workflow Redesign</span><div class="ticker-dot"></div>
+      <span><strong>Agent Implementation</strong></span><div class="ticker-dot"></div>
+      <span>Oxford University Pedigree</span><div class="ticker-dot"></div>
+      <span><strong>Results in weeks</strong></span><div class="ticker-dot"></div>
+      <span>Free initial consultation</span><div class="ticker-dot"></div>
+      <span><strong>No fluff. Ever.</strong></span><div class="ticker-dot"></div>
+      <span>AI-native consultancy</span><div class="ticker-dot"></div>
+    </div>
+    <!-- Exact duplicate for seamless loop -->
+    <div class="ticker-item">
+      <span><strong>AI Fluency Training</strong></span><div class="ticker-dot"></div>
+      <span>Workflow Redesign</span><div class="ticker-dot"></div>
+      <span><strong>Agent Implementation</strong></span><div class="ticker-dot"></div>
+      <span>Oxford University Pedigree</span><div class="ticker-dot"></div>
+      <span><strong>Results in weeks</strong></span><div class="ticker-dot"></div>
+      <span>Free initial consultation</span><div class="ticker-dot"></div>
+      <span><strong>No fluff. Ever.</strong></span><div class="ticker-dot"></div>
+      <span>AI-native consultancy</span><div class="ticker-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-cell">
+    <div class="stat-num"><span class="count" data-t="60">0</span><em>%</em></div>
+    <div class="stat-lbl">of repetitive tasks automatable with today's AI</div>
+    <div class="stat-src">¹ McKinsey Global Institute, 2023</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num"><span class="count" data-t="57">0</span><em>%</em></div>
+    <div class="stat-lbl">of work time spent in meetings and email, not deep work</div>
+    <div class="stat-src">² Microsoft Work Trend Index, 2023</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num"><span class="count" data-t="2">0</span><em>&nbsp;wks</em></div>
+    <div class="stat-lbl">to measurable productivity gains after implementation</div>
+    <div class="stat-src">Our typical client experience</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num"><em>£</em>0</div>
+    <div class="stat-lbl">for your initial consultation and workflow review</div>
+    <div class="stat-src">No commitment required</div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<section id="tools" class="section" style="padding:72px 56px">
+  <div class="container">
+    <p class="eyebrow" style="text-align:center">Tools we work with</p>
+    <div class="tools-grid">
+
+      <!-- Claude — Anthropic A-mark (clean geometric A with hollow centre) -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:#CC9B7A">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white">
+            <path fill-rule="evenodd" d="M12 2.5L3 21.5H8L9.4 18H14.6L16 21.5H21L12 2.5ZM10.6 15.5L12 10.5L13.4 15.5H10.6Z"/>
+          </svg>
+        </div>
+        Claude
+      </div>
+
+      <!-- ChatGPT — OpenAI inline SVG (confirmed good — keep) -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:#10A37F">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M22.28 9.8a5.9 5.9 0 0 0-.52-4.9 6.1 6.1 0 0 0-6.57-2.93A6.02 6.02 0 0 0 10.67 0 6.07 6.07 0 0 0 4.9 4.06a6.05 6.05 0 0 0-4.1 2.93 6.13 6.13 0 0 0 .75 7.17 5.9 5.9 0 0 0 .52 4.9 6.1 6.1 0 0 0 6.57 2.93 6.02 6.02 0 0 0 4.52 2.01 6.07 6.07 0 0 0 5.77-4.2 6.05 6.05 0 0 0 4.1-2.93 6.13 6.13 0 0 0-.75-7.07zm-9.1 12.8a4.49 4.49 0 0 1-2.88-1.04l.14-.08 4.78-2.76a.8.8 0 0 0 .4-.69v-6.74l2.02 1.17a.07.07 0 0 1 .04.05v5.58a4.52 4.52 0 0 1-4.5 4.51zm-9.68-4.13a4.48 4.48 0 0 1-.54-3.02l.14.09 4.78 2.76a.79.79 0 0 0 .79 0l5.83-3.37v2.34a.07.07 0 0 1-.03.06L9.2 19.78a4.52 4.52 0 0 1-5.7-1.31zM2.4 7.86A4.49 4.49 0 0 1 4.73 5.8v5.68c0 .28.15.54.4.69l5.83 3.37-2.02 1.17a.07.07 0 0 1-.07 0L4.12 14a4.52 4.52 0 0 1-1.72-6.14zm16.63 3.88-5.83-3.37 2.02-1.17a.07.07 0 0 1 .07 0l4.75 2.74a4.51 4.51 0 0 1-.7 8.14v-5.68a.79.79 0 0 0-.31-.66zm2.01-3.03-.14-.09-4.77-2.77a.79.79 0 0 0-.79 0L9.5 9.22V6.88a.07.07 0 0 1 .03-.06l4.75-2.74a4.52 4.52 0 0 1 6.76 4.63zM8.41 12.97l-2.02-1.17a.07.07 0 0 1-.04-.05V6.17a4.52 4.52 0 0 1 7.41-3.47l-.14.08-4.78 2.76a.8.8 0 0 0-.4.69zm1.1-2.37 2.6-1.5 2.6 1.5v3l-2.6 1.5-2.6-1.5z"/></svg>
+        </div>
+        ChatGPT
+      </div>
+
+      <!-- Microsoft Copilot — 4-circle pinwheel on blue-purple gradient -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:linear-gradient(135deg,#2764C8,#744DA9)">
+          <svg width="13" height="13" viewBox="0 0 24 24">
+            <circle cx="9.5" cy="9.5" r="5.8" fill="rgba(255,255,255,0.95)"/>
+            <circle cx="14.5" cy="9.5" r="5.8" fill="rgba(255,255,255,0.82)"/>
+            <circle cx="9.5" cy="14.5" r="5.8" fill="rgba(255,255,255,0.88)"/>
+            <circle cx="14.5" cy="14.5" r="5.8" fill="rgba(255,255,255,0.72)"/>
+          </svg>
+        </div>
+        Microsoft Copilot
+      </div>
+
+      <!-- Notion — bold geometric N letterform -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:#000000">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white">
+            <path d="M4 4h4.5v11.5L17.5 4H20v16H15.5V8.5L6.5 20H4z"/>
+          </svg>
+        </div>
+        Notion
+      </div>
+
+      <!-- Google Gemini — authentic 4-pointed star shape -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:linear-gradient(135deg,#1A73E8,#9C27B0)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2c0 5.52-4.48 10-10 10 5.52 0 10 4.48 10 10 0-5.52 4.48-10 10-10-5.52 0-10-4.48-10-10z"/>
+          </svg>
+        </div>
+        Google Gemini
+      </div>
+
+      <!-- Zapier — bold Z letterform -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:#FF4A00">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white">
+            <path d="M4 5h16v3.8L8.2 16.2H20V20H4v-3.8L15.8 8.8H4z"/>
+          </svg>
+        </div>
+        Zapier
+      </div>
+
+      <!-- Wispr Flow — black bg, 5 waveform bars forming a W silhouette -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:#000000">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white">
+            <rect x="1.5" y="5" width="3.5" height="14" rx="1.5"/>
+            <rect x="6.5" y="12" width="3.5" height="7" rx="1.5"/>
+            <rect x="10.25" y="8" width="3.5" height="11" rx="1.5"/>
+            <rect x="14" y="12" width="3.5" height="7" rx="1.5"/>
+            <rect x="19" y="5" width="3.5" height="14" rx="1.5"/>
+          </svg>
+        </div>
+        Wispr Flow
+      </div>
+
+      <!-- Google Workspace — multicolor G (confirmed good — keep) -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:#fff">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        Google Workspace
+      </div>
+
+      <!-- Microsoft 365 — 4-color squares (confirmed good — keep) -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:#fff">
+          <svg width="12" height="12" viewBox="0 0 24 24"><rect x="1" y="1" width="10" height="10" rx="1" fill="#F25022"/><rect x="13" y="1" width="10" height="10" rx="1" fill="#7FBA00"/><rect x="1" y="13" width="10" height="10" rx="1" fill="#00A4EF"/><rect x="13" y="13" width="10" height="10" rx="1" fill="#FFB900"/></svg>
+        </div>
+        Microsoft 365
+      </div>
+
+      <!-- Make — 3-node branching diagram (workflow automation) -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:#6D00CC">
+          <svg width="13" height="13" viewBox="0 0 24 24">
+            <circle cx="12" cy="4.5" r="2.8" fill="white"/>
+            <circle cx="4.5" cy="19.5" r="2.8" fill="white"/>
+            <circle cx="19.5" cy="19.5" r="2.8" fill="white"/>
+            <line x1="10.2" y1="6.8" x2="6.2" y2="17.3" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="13.8" y1="6.8" x2="17.8" y2="17.3" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        Make
+      </div>
+
+      <!-- n8n — two connected node rings (automation connector style) -->
+      <div class="tool-pill">
+        <div class="tool-icon" style="background:#EA4B71">
+          <svg width="13" height="13" viewBox="0 0 24 24">
+            <circle cx="7" cy="12" r="4.5" fill="none" stroke="white" stroke-width="2.2"/>
+            <circle cx="17" cy="12" r="4.5" fill="none" stroke="white" stroke-width="2.2"/>
+            <circle cx="12" cy="12" r="2.2" fill="white"/>
+          </svg>
+        </div>
+        n8n
+      </div>
+
+    </div>
+    <p class="tool-note">Icons shown are for identification purposes. All trademarks belong to their respective owners.</p>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" class="section" style="background:var(--bg2)">
+  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center">
+    <div class="reveal">
+      <p class="eyebrow">The problem</p>
+      <h2>Most people aren't<br>doing their job.</h2>
+      <p class="body-text" style="margin-bottom:16px">They're doing the admin <em>around</em> their job. Reporting. Formatting. Chasing. Summarising. Filing. Scheduling. Copying data from one place to another.</p>
+      <p class="body-text">AI can handle most of that — <strong style="color:#fff">right now</strong>, with tools that already exist. We come in, map your workflows, identify where the time is going, and show you exactly how to get it back. The result isn't redundancy. It's refocus.</p>
+      <a href="#services" class="btn-fill" style="margin-top:34px;display:inline-flex">
+        See our approach
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="reveal d1">
+      <p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:18px;text-align:right">Proportion of each task automatable with AI</p>
+      <div class="bar-list">
+        <div class="bar-row"><span class="bar-lbl">Document drafting</span><div class="bar-bg"><div class="bar-fill" style="--w:78%">78%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl">Data entry</span><div class="bar-bg"><div class="bar-fill" style="--w:85%">85%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl">Email &amp; comms</span><div class="bar-bg"><div class="bar-fill" style="--w:70%">70%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl">Report building</span><div class="bar-bg"><div class="bar-fill" style="--w:72%">72%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl">Scheduling</span><div class="bar-bg"><div class="bar-fill" style="--w:60%">60%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl">Research &amp; summary</span><div class="bar-bg"><div class="bar-fill" style="--w:80%">80%</div></div></div>
+      </div>
+      <p class="chart-note">¹ Based on McKinsey Global Institute analysis, 2023</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES — redesigned with clearer distinctions -->
+<section id="services" class="section" style="background:var(--bg)">
+  <div class="container">
+    <div class="svc-hdr">
+      <div class="reveal">
+        <p class="eyebrow">What we do</p>
+        <h2>Three ways we help.</h2>
+      </div>
+      <a href="#contact" class="btn-line reveal">Talk to us →</a>
+    </div>
+    <div class="svc-grid">
+
+      <!-- Service 1 -->
+      <div class="svc-card reveal">
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="svc-tag">Service 01</div>
+        <h3 class="svc-title">AI Fluency Training</h3>
+        <p class="svc-desc">Most people have tried ChatGPT once or twice. Almost none use it in a way that saves them real time each day. We run hands-on sessions with your team — using their actual work, on the day — covering the tools that matter: Claude, ChatGPT, Copilot. No slides. No theory. They leave using AI.</p>
+        <div class="svc-result">
+          <strong>What your team walks away with</strong>
+          <span>Genuine daily fluency — not awareness. AI as a work tool, not a novelty.</span>
+        </div>
+      </div>
+
+      <!-- Service 2 -->
+      <div class="svc-card reveal d1">
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="svc-tag">Service 02</div>
+        <h3 class="svc-title">Workflow Redesign</h3>
+        <p class="svc-desc">Beyond the tool lies the process. We audit how your team actually works — task by task — identify where time is being lost, and rebuild those processes with AI embedded from the start. Not "add a chatbot on top." A genuine rethink of how work gets done, so people focus on the judgment calls AI can't make.</p>
+        <div class="svc-result">
+          <strong>What your team walks away with</strong>
+          <span>A fundamentally more efficient way of working — built around your business.</span>
+        </div>
+      </div>
+
+      <!-- Service 3 -->
+      <div class="svc-card reveal d2">
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V7"/><circle cx="12" cy="5" r="2"/><path d="M7 15h.01M17 15h.01"/></svg>
+        </div>
+        <div class="svc-tag">Service 03</div>
+        <h3 class="svc-title">Agent Implementation</h3>
+        <p class="svc-desc">Some workflows don't need a human in the loop at all. A briefing that writes itself. A lead that arrives pre-researched. A report that lands in inboxes without being triggered. We design, build and deploy these autonomous systems — running continuously in the background, 24/7.</p>
+        <div class="svc-result">
+          <strong>What your team walks away with</strong>
+          <span>Autonomous workflows that deliver results around the clock, without being asked.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" class="section" style="background:var(--bg2)">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow" style="text-align:center">How it works</p>
+      <h2>From first call to live results.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-n">1</div>
+        <h3 class="step-title">Discovery call</h3>
+        <p class="step-desc">We understand your business, your team, and your goals. Free. No commitment required.</p>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-n">2</div>
+        <h3 class="step-title">Workflow audit</h3>
+        <p class="step-desc">We shadow your team to map exactly where time is being lost across roles and departments.</p>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-n">3</div>
+        <h3 class="step-title">Bespoke plan</h3>
+        <p class="step-desc">We design your AI integration plan — specific tools, specific workflows, built for your business.</p>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-n">4</div>
+        <h3 class="step-title">Implementation</h3>
+        <p class="step-desc">We build it, train your team, and stay until the results are measurable and embedded.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOARD -->
+<section id="board" class="section" style="background:var(--bg)">
+  <div class="container">
+    <div class="board-card reveal">
+      <p class="eyebrow">For leadership</p>
+      <h2>Your board is already<br>asking the question.</h2>
+      <p class="body-text">
+        AI is no longer a future consideration — it's a current board agenda item. Investors, trustees, and senior leadership are asking the same question across every industry: <em style="color:rgba(255,255,255,0.8)">what is our AI strategy, and are we moving fast enough?</em>
+      </p>
+      <p class="body-text" style="margin-top:14px">
+        Most internal teams don't have a clear answer. They know AI is important. They don't know where to start, which tools are genuinely useful, or how to build something that actually works — rather than just looking good in a presentation. That's the gap we fill. Fast to deploy, practically focused, and able to show results in weeks rather than months.
+      </p>
+      <a href="#contact" class="btn-fill" style="margin-top:36px;display:inline-flex">
+        Book your free consultation
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS — honest placeholder while client base builds -->
+<section id="reviews" class="section" style="background:var(--bg2)">
+  <div class="container">
+    <div class="reveal" style="text-align:center;max-width:500px;margin:0 auto 48px">
+      <p class="eyebrow">What clients say</p>
+      <h2>Early days. Honest results.</h2>
+    </div>
+    <div class="reviews-honest reveal">
+      <p class="eyebrow">Client references</p>
+      <p>We're building our client base and our case studies are still in progress. We'd rather be honest than show you something we haven't earned yet. <em>If you'd like to speak to someone we've worked with, or hear what we've delivered firsthand — just ask.</em></p>
+      <a href="#contact" class="btn-fill" style="display:inline-flex">
+        Speak to us directly
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section" style="background:var(--bg)">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">Who we are</p>
+      <h2>Not technical by trade.<br>Obsessed by it anyway.</h2>
+      <p class="body-text">We're a founder-led consultancy. Our background is in business strategy and a genuine obsession with the fast-moving AI tooling landscape. We spend every morning tracking what's new, what works, and what's worth using.</p>
+      <p class="body-text" style="margin-top:14px">When we walk into your organisation, we're not reading from a slide deck. We know the tools. We've built with them. We can show you exactly what they can do for your specific workflows.</p>
+      <div class="cred-pills">
+        <span class="cred-pill">Oxford University</span>
+        <span class="cred-pill">Business strategy</span>
+        <span class="cred-pill">AI-native operators</span>
+        <span class="cred-pill">No fluff. Ever.</span>
+      </div>
+    </div>
+    <div class="about-panel reveal d1">
+      <div class="panel-grid"></div>
+      <div class="panel-inner">
+        <div class="panel-qm">"</div>
+        <p class="panel-text">Learnt to code the easy way — using AI. Since then, I have been completely obsessed with how AI can function as a second brain and unlock a world of possibilities. Don't believe us? Let us show you.</p>
+        <div class="panel-who">Archie McLintock · Founder, Integrate.AI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section" style="background:var(--bg2)">
+  <div class="container" style="max-width:720px">
+    <div class="reveal">
+      <p class="eyebrow">Common questions</p>
+      <h2>FAQs.</h2>
+    </div>
+    <div class="faq-list reveal">
+
+      <div class="faq-item">
+        <button class="faq-q">What does the initial consultation involve?<div class="faq-chevron"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></button>
+        <div class="faq-a">The initial consultation is completely free. We come in, meet your team, and spend time understanding how your business actually operates — not how it looks on an org chart. From there we identify where AI can add the most value and give you an honest picture of what's possible. There's no pitch, no pressure, and no commitment required.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">How do you handle data security and privacy?<div class="faq-chevron"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></button>
+        <div class="faq-a">This is the most important question, and we take it seriously. We understand exactly how each tool handles your data — what gets stored, where, and for how long. For businesses working with sensitive data (legal, financial, medical), we can recommend and implement closed-loop, locally-run agentic workflows that keep your data entirely on-premise. We never recommend a tool we can't fully explain the data policy of.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Will this make some of our employees redundant?<div class="faq-chevron"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></button>
+        <div class="faq-a">No — and this is something we feel strongly about. AI at this stage is a productivity tool, not a replacement. The roles most affected by automation are not eliminated; they're redefined. The analyst who spent three hours a week pulling data into a report now spends those three hours interpreting what the data means. We're in the business of making your existing team significantly more effective — not recommending redundancies.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">What are the risks of AI implementation?<div class="faq-chevron"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></button>
+        <div class="faq-a">Agentic AI and automation tools are relatively new, and we give full transparency on the risk profiles of every solution we recommend. The risks are manageable — most tools today allow you to effectively limit their access so your team stays in complete control. We never implement anything where the downside risk outweighs the benefit, and we always start with low-risk, high-value use cases before tackling more complex automation.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">How much does it cost?<div class="faq-chevron"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></button>
+        <div class="faq-a">The initial consultation is free. Beyond that, we charge a fee relative to the value we add — if we can make your team 20% more efficient, we charge accordingly; if we can only deliver 10% gains, we charge less. We're not interested in engagements where the numbers don't work for the client. Every proposal is tailored to the size and specific needs of your organisation.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">How quickly will we see results?<div class="faq-chevron"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></button>
+        <div class="faq-a">For AI Fluency Training and Workflow Redesign sessions, teams typically see measurable time savings within the first week — often the same day. For Agent Implementation (fully automated workflows), the build and deployment phase usually takes two to four weeks, after which the system runs permanently with minimal maintenance.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section" style="background:var(--bg)">
+  <div class="container">
+    <p class="eyebrow reveal">Get in touch</p>
+    <h2 class="reveal">Ready to get your<br>team's time back?</h2>
+    <p class="body-text reveal" style="margin:0 auto 44px;text-align:center">The initial consultation is free. We come in, understand how you work, and if there's scope to help — we show you exactly what's possible.</p>
+    <div class="form-box reveal">
+      <form action="mailto:archie4444@icloud.com" method="post" enctype="text/plain">
+        <div class="form-row2">
+          <div class="fg"><label>Name</label><input type="text" name="name" placeholder="Jane Smith"></div>
+          <div class="fg"><label>Company</label><input type="text" name="company" placeholder="Acme Ltd"></div>
+        </div>
+        <div class="fg"><label>Email</label><input type="email" name="email" placeholder="jane@company.com"></div>
+        <div class="fg"><label>Message</label><textarea rows="4" name="message" placeholder="Tell us about your team and what you're hoping to achieve..."></textarea></div>
+        <button type="submit" class="form-submit">Send message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <a href="#" class="logo">Integrate<em>.AI</em></a>
+        <p>Helping organisations implement AI workflows that deliver measurable results within weeks.</p>
+      </div>
+      <div class="ft-cols">
+        <div class="ft-col">
+          <h4>Company</h4>
+          <a href="#services">Services</a>
+          <a href="#process">How it works</a>
+          <a href="#about">About</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="ft-col">
+          <h4>Contact</h4>
+          <a href="#contact">Book a free call</a>
+          <a href="mailto:hello@integrateai.uk">hello@integrateai.uk</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">X (Twitter)</a>
+        </div>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p>© 2026 Integrate.AI · All rights reserved.</p>
+      <p>integrateai.uk · Oxford, UK</p>
+    </div>
+  </div>
+</footer>
+
+<!-- COLOUR SWITCHER — 5 themes, click to apply instantly -->
+<div id="theme-sw">
+  <span>Theme</span>
+  <div class="sw-dots">
+    <button class="sw-dot" title="Indigo" style="background:#5b63f5"
+      data-accent="#5b63f5" data-purple="#8b5cf6"
+      data-bar-start="rgba(91,99,245,0.6)" data-bar-end="rgba(91,99,245,0.2)"></button>
+    <button class="sw-dot" title="Electric Blue" style="background:#2563eb"
+      data-accent="#2563eb" data-purple="#60a5fa"
+      data-bar-start="rgba(37,99,235,0.6)" data-bar-end="rgba(37,99,235,0.2)"></button>
+    <button class="sw-dot" title="Violet" style="background:#7c3aed"
+      data-accent="#7c3aed" data-purple="#a78bfa"
+      data-bar-start="rgba(124,58,237,0.6)" data-bar-end="rgba(124,58,237,0.2)"></button>
+    <button class="sw-dot active" title="Teal (default)" style="background:#0d9488"
+      data-accent="#0d9488" data-purple="#2dd4bf"
+      data-bar-start="rgba(13,148,136,0.6)" data-bar-end="rgba(13,148,136,0.2)"></button>
+    <button class="sw-dot" title="Rose" style="background:#e11d48"
+      data-accent="#e11d48" data-purple="#fb7185"
+      data-bar-start="rgba(225,29,72,0.6)" data-bar-end="rgba(225,29,72,0.2)"></button>
+  </div>
+</div>
+
+<script>
+/* SCROLL REVEAL — re-fires every time element enters viewport scrolling down.
+   Instant reset (no transition) when scrolling back up, so it's always fresh. */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    } else {
+      /* Remove transition momentarily so the reset is instant, not visible */
+      entry.target.style.transition = 'none';
+      entry.target.classList.remove('visible');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        entry.target.style.transition = '';
+      }));
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* BAR CHART */
+const bo = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.bar-fill').forEach(b => b.classList.add('go'));
+    } else {
+      entry.target.querySelectorAll('.bar-fill').forEach(b => b.classList.remove('go'));
+    }
+  });
+}, { threshold: 0.3 });
+const prob = document.querySelector('#problem .container');
+if (prob) bo.observe(prob);
+
+/* COUNTERS */
+const countedEls = new WeakSet();
+const co = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !countedEls.has(entry.target)) {
+      countedEls.add(entry.target);
+      const t = +entry.target.dataset.t;
+      if (t === 0) return;
+      const d = 1600, s = Date.now();
+      const tick = () => {
+        const p = Math.min((Date.now() - s) / d, 1);
+        entry.target.textContent = Math.round((1 - Math.pow(1 - p, 3)) * t);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      tick();
+    }
+    if (!entry.isIntersecting) countedEls.delete(entry.target);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.count').forEach(c => co.observe(c));
+
+/* NAV scroll */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').style.background =
+    scrollY > 60 ? 'rgba(4,7,13,0.97)' : 'rgba(4,7,13,0.75)';
+}, { passive: true });
+
+/* COLOUR SWITCHER */
+document.querySelectorAll('.sw-dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    document.querySelectorAll('.sw-dot').forEach(d => d.classList.remove('active'));
+    dot.classList.add('active');
+    const r = document.documentElement.style;
+    r.setProperty('--accent',    dot.dataset.accent);
+    r.setProperty('--purple',    dot.dataset.purple);
+    r.setProperty('--bar-start', dot.dataset.barStart);
+    r.setProperty('--bar-end',   dot.dataset.barEnd);
+  });
+});
+
+/* FAQ accordion */
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
