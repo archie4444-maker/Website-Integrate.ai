@@ -141,6 +141,15 @@
     h2 { font-family: 'Figtree', sans-serif; font-size: clamp(30px, 4vw, 50px); font-weight: 900; letter-spacing: -0.035em; line-height: 1.08; margin-bottom: 18px; color: #fff; }
     .body-text { font-size: 16px; color: var(--muted); line-height: 1.82; max-width: 580px; }
 
+    /* ── FREE CONSULTATION CALLOUT ── */
+    .consult-strip {
+      background: rgba(13,148,136,0.06); border-top: 1px solid rgba(13,148,136,0.18); border-bottom: 1px solid rgba(13,148,136,0.18);
+      padding: 22px 56px; display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap;
+    }
+    .consult-strip .consult-num { font-family:'Figtree',sans-serif; font-size: 30px; font-weight: 900; color: var(--accent); letter-spacing: -0.04em; line-height: 1; }
+    .consult-strip .consult-label { font-size: 14px; color: var(--muted); line-height: 1.4; }
+    .consult-strip .consult-label strong { color: rgba(255,255,255,0.8); font-weight: 600; }
+
     /* ── TOOLS ── */
     #tools { padding: 72px 56px; background: var(--bg); }
     #tools .eyebrow { text-align: center; margin-bottom: 32px; }
@@ -168,7 +177,8 @@
 
     /* ── SERVICES ── */
     #services { background: var(--bg); }
-    .svc-hdr { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+    .svc-hdr { margin-bottom: 48px; }
+    .svc-cta { text-align: center; margin-top: 40px; }
     .svc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
     .svc-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 34px 28px; transition: all 0.3s; position: relative; overflow: hidden; }
     .svc-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(13,148,136,0.06),transparent 55%); opacity:0; transition:opacity 0.3s; }
@@ -184,8 +194,8 @@
     .svc-result span { font-size: 13px; color: rgba(255,255,255,0.6); }
 
     /* ── PROCESS ── */
-    #process { background: var(--bg2); }
-    #process .container > div:first-child { text-align: center; max-width: 520px; margin: 0 auto 64px; }
+    #process { background: var(--bg2); padding: 72px 56px; }
+    #process .container > div:first-child { text-align: center; max-width: 520px; margin: 0 auto 40px; }
     .steps { display: grid; grid-template-columns: repeat(4,1fr); position: relative; }
     .steps::before { content:''; position:absolute; top:26px; left:12%; right:12%; height:1px; background:linear-gradient(90deg,transparent,rgba(13,148,136,0.25),rgba(13,148,136,0.45),rgba(13,148,136,0.25),transparent); }
     .step { text-align: center; padding: 0 18px; }
@@ -274,23 +284,6 @@
     .reveal.visible { opacity:1; transform:translateY(0); }
     .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
 
-    /* ── COLOUR SWITCHER ── */
-    #theme-sw {
-      position: fixed; bottom: 24px; right: 24px; z-index: 400;
-      background: rgba(8,12,21,0.92); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px; padding: 10px 14px;
-      backdrop-filter: blur(16px);
-      display: flex; align-items: center; gap: 11px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    }
-    #theme-sw span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.28); }
-    .sw-dots { display: flex; gap: 7px; }
-    .sw-dot {
-      width: 16px; height: 16px; border-radius: 50%; border: 2px solid transparent;
-      cursor: pointer; transition: all 0.18s; outline: none; padding: 0;
-    }
-    .sw-dot:hover { transform: scale(1.22); }
-    .sw-dot.active { border-color: rgba(255,255,255,0.65); }
 
     /* ── MOBILE ── */
     @media (max-width: 900px) {
@@ -425,11 +418,13 @@
     <div class="stat-lbl">to measurable productivity gains after implementation</div>
     <div class="stat-src">Our typical client experience</div>
   </div>
-  <div class="stat-cell">
-    <div class="stat-num"><em>£</em>0</div>
-    <div class="stat-lbl">for your initial consultation and workflow review</div>
-    <div class="stat-src">No commitment required</div>
-  </div>
+</div>
+
+<!-- FREE CONSULTATION CALLOUT -->
+<div class="consult-strip">
+  <span class="consult-num">£0</span>
+  <span class="consult-label"><strong>Free initial consultation &amp; workflow review</strong><br>No pitch. No commitment. Just an honest look at what's possible.</span>
+  <a href="#contact" class="btn-line">Book yours →</a>
 </div>
 
 <!-- TOOLS -->
@@ -596,7 +591,6 @@
         <p class="eyebrow">What we do</p>
         <h2>Three ways we help.</h2>
       </div>
-      <a href="#contact" class="btn-line reveal">Talk to us →</a>
     </div>
     <div class="svc-grid">
 
@@ -642,6 +636,9 @@
         </div>
       </div>
 
+    </div>
+    <div class="svc-cta reveal">
+      <a href="#contact" class="btn-line">Not sure which fits? Talk to us →</a>
     </div>
   </div>
 </section>
@@ -837,28 +834,6 @@
   </div>
 </footer>
 
-<!-- COLOUR SWITCHER — 5 themes, click to apply instantly -->
-<div id="theme-sw">
-  <span>Theme</span>
-  <div class="sw-dots">
-    <button class="sw-dot" title="Indigo" style="background:#5b63f5"
-      data-accent="#5b63f5" data-purple="#8b5cf6"
-      data-bar-start="rgba(91,99,245,0.6)" data-bar-end="rgba(91,99,245,0.2)"></button>
-    <button class="sw-dot" title="Electric Blue" style="background:#2563eb"
-      data-accent="#2563eb" data-purple="#60a5fa"
-      data-bar-start="rgba(37,99,235,0.6)" data-bar-end="rgba(37,99,235,0.2)"></button>
-    <button class="sw-dot" title="Violet" style="background:#7c3aed"
-      data-accent="#7c3aed" data-purple="#a78bfa"
-      data-bar-start="rgba(124,58,237,0.6)" data-bar-end="rgba(124,58,237,0.2)"></button>
-    <button class="sw-dot active" title="Teal (default)" style="background:#0d9488"
-      data-accent="#0d9488" data-purple="#2dd4bf"
-      data-bar-start="rgba(13,148,136,0.6)" data-bar-end="rgba(13,148,136,0.2)"></button>
-    <button class="sw-dot" title="Rose" style="background:#e11d48"
-      data-accent="#e11d48" data-purple="#fb7185"
-      data-bar-start="rgba(225,29,72,0.6)" data-bar-end="rgba(225,29,72,0.2)"></button>
-  </div>
-</div>
-
 <script>
 /* SCROLL REVEAL — re-fires every time element enters viewport scrolling down.
    Instant reset (no transition) when scrolling back up, so it's always fresh. */
@@ -917,19 +892,6 @@ window.addEventListener('scroll', () => {
   document.getElementById('nav').style.background =
     scrollY > 60 ? 'rgba(4,7,13,0.97)' : 'rgba(4,7,13,0.75)';
 }, { passive: true });
-
-/* COLOUR SWITCHER */
-document.querySelectorAll('.sw-dot').forEach(dot => {
-  dot.addEventListener('click', () => {
-    document.querySelectorAll('.sw-dot').forEach(d => d.classList.remove('active'));
-    dot.classList.add('active');
-    const r = document.documentElement.style;
-    r.setProperty('--accent',    dot.dataset.accent);
-    r.setProperty('--purple',    dot.dataset.purple);
-    r.setProperty('--bar-start', dot.dataset.barStart);
-    r.setProperty('--bar-end',   dot.dataset.barEnd);
-  });
-});
 
 /* FAQ accordion */
 document.querySelectorAll('.faq-q').forEach(btn => {
