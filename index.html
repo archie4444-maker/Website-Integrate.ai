@@ -43,164 +43,254 @@
     .nav-links { display: flex; gap: 36px; list-style: none; }
     .nav-links a { font-size: 13.5px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: #fff; }
-    .nav-btn { padding: 10px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 13.5px; font-weight: 500; background: transparent; color: var(--text); cursor: pointer; transition: all 0.2s; }
-    .nav-btn:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
-    @media (max-width: 768px) { nav { padding: 0 20px; } .nav-links { gap: 20px; } }
+    .nav-btn { padding: 8px 20px; background: var(--accent); color: #000; border: none; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .nav-btn:hover { background: #0da389; transform: translateY(-1px); }
 
     /* ── HERO ── */
-    .hero { margin-top: 66px; padding: 120px 56px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .hero h1 { font-family: 'Figtree', sans-serif; font-size: 64px; font-weight: 900; line-height: 1.15; margin-bottom: 24px; max-width: 900px; }
+    .hero {
+      padding-top: 120px; padding-bottom: 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero h1 {
+      font-family: 'Figtree', sans-serif;
+      font-size: 64px; font-weight: 900; line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
     .hero h1 em { font-style: normal; color: var(--accent); }
-    .hero p { font-size: 16px; color: var(--muted); line-height: 1.6; max-width: 600px; margin-bottom: 40px; }
-    .cta-button { padding: 14px 32px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; background: var(--accent); color: var(--bg); cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
-    .cta-button:hover { background: #0a8577; transform: translateY(-2px); }
-    @media (max-width: 768px) { .hero { padding: 100px 20px; } .hero h1 { font-size: 40px; } }
+    .hero p { font-size: 18px; color: var(--muted); max-width: 700px; margin: 0 auto 40px; line-height: 1.6; }
+    .hero .cta { display: inline-flex; gap: 16px; }
+    .cta-btn {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .cta-primary { background: var(--accent); color: #000; }
+    .cta-primary:hover { background: #0da389; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(13,148,136,0.3); }
+    .cta-secondary { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }
+    .cta-secondary:hover { background: rgba(13,148,136,0.1); }
 
     /* ── WAVE ── */
-    .wave-section { width: 100%; overflow: hidden; }
-    svg { width: 100%; height: auto; display: block; }
+    .wave-container {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 200px; overflow: hidden;
+      opacity: 1;
+      visibility: visible;
+    }
+    svg.wave { display: block; width: 100%; height: 100%; }
 
-    /* ── SERVICES ── */
-    .services { padding: 120px 56px; background: var(--bg2); }
-    .services h2 { font-family: 'Figtree', sans-serif; font-size: 48px; font-weight: 900; margin-bottom: 60px; text-align: center; }
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; }
-    .service-card { padding: 40px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); transition: all 0.3s; }
-    .service-card:hover { border-color: var(--accent); transform: translateY(-8px); background: rgba(13,148,136,0.05); }
-    .service-icon { width: 48px; height: 48px; margin-bottom: 20px; }
-    .service-icon img { width: 100%; height: 100%; }
-    .service-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
-    .service-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
-    @media (max-width: 768px) { .services { padding: 80px 20px; } .services h2 { font-size: 32px; margin-bottom: 40px; } }
+    /* ── CARDS SECTION ── */
+    .cards-section { padding: 80px 56px; }
+    .cards-title { font-family: 'Figtree', sans-serif; font-size: 42px; font-weight: 800; text-align: center; margin-bottom: 60px; }
+    .cards-title em { color: var(--accent); }
+
+    .cards-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;
+      margin-bottom: 60px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px rgba(13,148,136,0.15);
+      transform: translateY(-4px);
+    }
+    .card-icon { width: 48px; height: 48px; margin-bottom: 16px; }
+    .card-icon img { width: 100%; height: 100%; object-fit: contain; filter: brightness(1.2); }
+    .card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+    .card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
 
     /* ── FOOTER ── */
-    footer { padding: 40px 56px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 13px; }
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 40px 56px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
     footer a { color: var(--accent); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
-    @media (max-width: 768px) { footer { padding: 30px 20px; } }
+
+    /* ── ACCORDION ── */
+    .accordion-container { padding: 80px 56px; background: var(--bg2); }
+    .accordion-title { font-family: 'Figtree', sans-serif; font-size: 42px; font-weight: 800; text-align: center; margin-bottom: 60px; }
+    .accordion-title em { color: var(--accent); }
+    .accordion {
+      max-width: 800px; margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .accordion-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .accordion-item:last-child { border-bottom: none; }
+    .accordion-header {
+      padding: 20px 24px;
+      background: var(--card);
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .accordion-header:hover { background: rgba(255,255,255,0.05); }
+    .accordion-header.open { background: rgba(13,148,136,0.2); }
+    .toggle-icon {
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s;
+      color: var(--accent);
+    }
+    .accordion-header.open .toggle-icon { transform: rotate(180deg); }
+    .accordion-content {
+      padding: 0 24px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s, padding 0.3s;
+      background: rgba(13,148,136,0.05);
+    }
+    .accordion-header.open + .accordion-content {
+      padding: 20px 24px;
+      max-height: 500px;
+    }
+    .accordion-content p { color: var(--muted); line-height: 1.6; font-size: 14px; }
   </style>
 </head>
 <body>
+  <!-- NAV -->
   <nav>
     <a href="#" class="logo"><em>Integrate</em>.AI</a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
-      <li><a href="#about">About</a></li>
+      <li><a href="#faq">FAQ</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <button class="nav-btn">Get Started</button>
   </nav>
 
+  <!-- HERO -->
   <section class="hero">
-    <h1>Transform Your Workflow with <em>AI Integration</em></h1>
-    <p>Streamline your business processes with intelligent AI solutions designed for the modern enterprise.</p>
-    <a href="#" class="cta-button">Start Your AI Journey</a>
+    <h1>Transform Your Workflow with <em>AI</em></h1>
+    <p>We integrate cutting-edge AI systems into your business processes, streamlining operations and unlocking unprecedented efficiency.</p>
+    <div class="cta">
+      <button class="cta-btn cta-primary">Schedule Demo</button>
+      <button class="cta-btn cta-secondary">Learn More</button>
+    </div>
+    <div class="wave-container">
+      <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:rgba(13,148,136,0.6);stop-opacity:1" />
+            <stop offset="100%" style="stop-color:rgba(13,148,136,0.2);stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path d="M0,30 Q300,80 600,30 T1200,30 L1200,120 L0,120 Z" fill="url(#grad1)" />
+      </svg>
+    </div>
   </section>
 
-  <section class="wave-section">
-    <svg viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="waveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:rgba(13,148,136,0.6);stop-opacity:1" />
-          <stop offset="100%" style="stop-color:rgba(13,148,136,0.1);stop-opacity:1" />
-        </linearGradient>
-      </defs>
-      <path d="M0,150 Q300,50 600,150 T1200,150 L1200,300 Q900,200 600,300 T0,300 Z" fill="url(#waveGrad)" stroke="rgba(13,148,136,0.5)" stroke-width="2"/>
-      <path d="M0,450 Q300,350 600,450 T1200,450 L1200,600 Q900,500 600,600 T0,600 Z" fill="url(#waveGrad)" stroke="rgba(13,148,136,0.3)" stroke-width="1" opacity="0.7"/>
-    </svg>
-  </section>
-
-  <section id="services" class="services">
-    <h2>Our Services</h2>
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/pythonhttps:/cdn.simpleicons.org/python/0d9488" alt="Python" loading="lazy">
+  <!-- CARDS SECTION -->
+  <section class="cards-section" id="services">
+    <h2 class="cards-title">Our <em>Services</em></h2>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">
+          <img src="https://cdn.simpleicons.org/openai/ffffff" alt="ChatGPT">
         </div>
-        <h3>AI & Machine Learning</h3>
-        <p>Build intelligent systems that learn and adapt to your business needs with cutting-edge machine learning models.</p>
+        <h3>AI Integration</h3>
+        <p>Seamlessly integrate AI models like ChatGPT into your existing workflows for enhanced productivity.</p>
       </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/node.js/0d9488" alt="Node.js" loading="lazy">
+      <div class="card">
+        <div class="card-icon">
+          <img src="https://cdn.simpleicons.org/anthropic/ffffff" alt="Claude">
         </div>
-        <h3>API Integration</h3>
-        <p>Seamlessly connect your systems with robust API integrations and real-time data synchronization.</p>
+        <h3>AI Consulting</h3>
+        <p>Expert guidance on implementing AI solutions tailored to your business needs and challenges.</p>
       </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/react/0d9488" alt="React" loading="lazy">
+      <div class="card">
+        <div class="card-icon">
+          <img src="https://cdn.simpleicons.org/python/ffffff" alt="Python">
         </div>
-        <h3>Frontend Development</h3>
-        <p>Create stunning, responsive interfaces that engage users and drive conversions with modern web technologies.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/googlemaps/0d9488" alt="Google Maps" loading="lazy">
-        </div>
-        <h3>Location Services</h3>
-        <p>Leverage geolocation data to provide location-aware features and personalized user experiences.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/sqlite/0d9488" alt="SQLite" loading="lazy">
-        </div>
-        <h3>Data Management</h3>
-        <p>Manage your data efficiently with optimized database solutions tailored to your application's needs.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/github/0d9488" alt="GitHub" loading="lazy">
-        </div>
-        <h3>Version Control</h3>
-        <p>Streamline your development workflow with professional version control and collaborative tools.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/docker/0d9488" alt="Docker" loading="lazy">
-        </div>
-        <h3>DevOps & Deployment</h3>
-        <p>Automate your deployment pipeline with containerization and cloud-native solutions for scalability.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/amazon/0d9488" alt="AWS" loading="lazy">
-        </div>
-        <h3>Cloud Infrastructure</h3>
-        <p>Build and scale your applications on reliable cloud infrastructure with enterprise-grade security.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/postgresql/0d9488" alt="PostgreSQL" loading="lazy">
-        </div>
-        <h3>Database Design</h3>
-        <p>Design robust database architectures that handle complex queries and large-scale data operations.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/typescript/0d9488" alt="TypeScript" loading="lazy">
-        </div>
-        <h3>Type-Safe Development</h3>
-        <p>Reduce bugs and improve code quality with static typing and modern development practices.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/vercel/0d9488" alt="Vercel" loading="lazy">
-        </div>
-        <h3>Performance Optimization</h3>
-        <p>Ensure lightning-fast load times and smooth user experiences with advanced optimization techniques.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <img src="https://cdn.simpleicons.org/redis/0d9488" alt="Redis" loading="lazy">
-        </div>
-        <h3>Caching Solutions</h3>
-        <p>Accelerate your applications with intelligent caching strategies and real-time data processing.</p>
+        <h3>Custom Development</h3>
+        <p>Build bespoke AI applications designed specifically for your company's unique requirements.</p>
       </div>
     </div>
   </section>
 
-  <footer>
-    <p>&copy; 2026 Integrate.AI. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+  <!-- ACCORDION/FAQ -->
+  <section class="accordion-container" id="faq">
+    <h2 class="accordion-title">Frequently Asked <em>Questions</em></h2>
+    <div class="accordion">
+      <button class="accordion-header">
+        <span>What services do you offer?</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div class="accordion-content">
+        <p>We offer AI integration, consulting, and custom development services. Our experts work with you to understand your needs and implement solutions that drive real business value.</p>
+      </div>
+
+      <button class="accordion-header">
+        <span>How long does a typical project take?</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div class="accordion-content">
+        <p>Project timelines vary depending on scope and complexity. Most projects range from 4-12 weeks. We'll provide a detailed timeline during our initial consultation.</p>
+      </div>
+
+      <button class="accordion-header">
+        <span>Do you offer ongoing support?</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div class="accordion-content">
+        <p>Yes, we provide comprehensive support and maintenance packages to ensure your AI systems continue to operate smoothly and adapt to your evolving business needs.</p>
+      </div>
+
+      <button class="accordion-header">
+        <span>What if I have no AI experience?</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div class="accordion-content">
+        <p>No problem! Our consulting process is designed to educate your team while implementing solutions. We'll guide you every step of the way.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <p>&copy; 2024 Integrate.AI. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
   </footer>
+
+  <script>
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+      header.addEventListener('click', function() {
+        const item = this.closest('.accordion-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
 </body>
 </html>
