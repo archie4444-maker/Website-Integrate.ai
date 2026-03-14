@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+       INTEGRATE.AI — contact.html
+       Contact form page with Netlify form handling.
+
+       HOW TO EDIT COPY:
+       Search for "COPY:" to find every editable text block.
+       The Netlify form works automatically when hosted on Netlify —
+       no backend code needed. It submits to your Netlify dashboard.
+       ============================================================ -->
+
+  <!-- COPY: Page Title -->
+  <title>Contact — Integrate.AI</title>
+  <!-- /COPY -->
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="grid-bg">
+
+  <!-- Ambient particle canvas -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Scroll progress bar -->
+  <div id="scroll-progress" style="position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:200;width:0;transition:width 0.1s linear;" aria-hidden="true"></div>
+
+  <!-- =============================================================
+       NAVIGATION
+       ============================================================= -->
+  <nav>
+    <!-- COPY: Nav Logo -->
+    <a href="index.html" class="nav-logo">Integrate<span>.AI</span></a>
+    <!-- /COPY -->
+
+    <ul class="nav-links">
+      <!-- COPY: Nav Links -->
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#case-studies">Work</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="contact.html" class="nav-cta">Book a Call</a></li>
+      <!-- /COPY -->
+    </ul>
+
+    <button class="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+
+  <!-- =============================================================
+       CONTACT PAGE CONTENT
+       ============================================================= -->
+  <div class="contact-page">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Left column: info -->
+        <div class="contact-info">
+
+          <!-- COPY: Contact Eyebrow -->
+          <div class="section-label reveal">Get In Touch</div>
+          <!-- /COPY -->
+
+          <!-- COPY: Contact Headline -->
+          <h1 class="reveal">
+            Let's find out<br />
+            what's <span class="text-accent">possible.</span>
+          </h1>
+          <!-- /COPY -->
+
+          <!-- COPY: Contact Intro Paragraph -->
+          <p class="reveal reveal-delay-1">
+            The initial consultation is always free. Tell us a little about your
+            business and we will come back to you within 24 hours to set up a call
+            or an in-person meeting.
+          </p>
+          <!-- /COPY -->
+
+          <!-- COPY: Contact Details — update email/phone as needed -->
+          <div class="contact-detail reveal reveal-delay-1">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            archie4444@icloud.com
+          </div>
+
+          <div class="contact-detail reveal reveal-delay-2" style="border-bottom:none;">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            London, UK — available in-person and remote
+          </div>
+          <!-- /COPY -->
+
+          <!-- COPY: Contact Social Links — update href when handles are live -->
+          <div style="margin-top:48px;display:flex;gap:16px;flex-wrap:wrap;" class="reveal reveal-delay-3">
+            <a href="#" class="btn-ghost" style="padding:10px 20px;font-size:0.75rem;">LinkedIn &#8599;</a>
+            <a href="#" class="btn-ghost" style="padding:10px 20px;font-size:0.75rem;">X (Twitter) &#8599;</a>
+          </div>
+          <!-- /COPY -->
+
+        </div>
+
+        <!-- Right column: form -->
+        <!-- ============================================================
+             NETLIFY FORM — do not remove name="contact" or data-netlify="true"
+             These two attributes are what activate Netlify's form handler.
+             Submissions appear in your Netlify dashboard under Forms.
+             ============================================================ -->
+        <div class="form-panel reveal reveal-delay-2">
+
+          <!-- COPY: Form Heading -->
+          <div class="section-label" style="margin-bottom:28px;">Initiate Contact</div>
+          <!-- /COPY -->
+
+          <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            action="/thank-you.html"
+          >
+            <!-- Netlify bot protection — do not remove -->
+            <input type="hidden" name="form-name" value="contact" />
+            <p style="display:none;">
+              <label>Do not fill this out: <input name="bot-field" /></label>
+            </p>
+
+            <div class="form-row">
+
+              <!-- COPY: Form Field — First Name -->
+              <div class="field">
+                <label for="first-name">First Name *</label>
+                <input
+                  type="text"
+                  id="first-name"
+                  name="first-name"
+                  placeholder="Jane"
+                  required
+                />
+              </div>
+              <!-- /COPY -->
+
+              <!-- COPY: Form Field — Last Name -->
+              <div class="field">
+                <label for="last-name">Last Name *</label>
+                <input
+                  type="text"
+                  id="last-name"
+                  name="last-name"
+                  placeholder="Smith"
+                  required
+                />
+              </div>
+              <!-- /COPY -->
+
+            </div>
+
+            <!-- COPY: Form Field — Email -->
+            <div class="field">
+              <label for="email">Email Address *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="jane@company.com"
+                required
+              />
+            </div>
+            <!-- /COPY -->
+
+            <!-- COPY: Form Field — Phone -->
+            <div class="field">
+              <label for="phone">Phone Number</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="+44 7700 000000"
+              />
+            </div>
+            <!-- /COPY -->
+
+            <!-- COPY: Form Field — Company -->
+            <div class="field">
+              <label for="company">Company / Organisation</label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                placeholder="Acme Ltd"
+              />
+            </div>
+            <!-- /COPY -->
+
+            <!-- COPY: Form Field — How can we help dropdown — add/remove options as needed -->
+            <div class="field">
+              <label for="service">What are you looking for? *</label>
+              <select id="service" name="service" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="tool-direction">Tool Direction — point me to the right AI tools</option>
+                <option value="workflow-automation">Workflow Automation — automate our processes</option>
+                <option value="agent-build">Agent Build — deploy intelligent AI agents</option>
+                <option value="not-sure">Not sure yet — let us help figure it out</option>
+              </select>
+            </div>
+            <!-- /COPY -->
+
+            <!-- COPY: Form Field — Message -->
+            <div class="field">
+              <label for="message">Tell us about your business *</label>
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Brief overview of your business, team size, and what you are hoping AI can help with..."
+                required
+              ></textarea>
+            </div>
+            <!-- /COPY -->
+
+            <!-- COPY: Form Submit Button -->
+            <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
+              Send Message &#8594;
+            </button>
+            <!-- /COPY -->
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =============================================================
+       FOOTER
+       ============================================================= -->
+  <footer style="margin-top:0;">
+    <div class="container">
+      <!-- COPY: Contact Footer Bottom -->
+      <div class="footer-bottom" style="border-top:1px solid var(--border);padding-top:32px;">
+        <p>&#169; 2026 Integrate.AI. All rights reserved.</p>
+        <p><a href="index.html" style="color:var(--text-muted);transition:color 0.15s;">&#8592; Back to Home</a></p>
+      </div>
+      <!-- /COPY -->
+    </div>
+  </footer>
+
+
+  <script src="js/main.js"></script>
+</body>
+</html>

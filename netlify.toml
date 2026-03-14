@@ -1,0 +1,57 @@
+# ============================================================
+# INTEGRATE.AI — netlify.toml
+# Security headers + build config for Netlify deployment.
+# This file must sit in the root of your repo alongside index.html
+# ============================================================
+
+[build]
+  publish = "."
+
+# ── Security Headers ─────────────────────────────────────────
+# These prevent institutional firewalls from flagging the site
+# and protect against common web attacks.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+
+    # Prevents the site being embedded in iframes (clickjacking protection)
+    X-Frame-Options = "DENY"
+
+    # Stops browsers from guessing content types (MIME sniffing attack prevention)
+    X-Content-Type-Options = "nosniff"
+
+    # Forces HTTPS for 1 year — protects returning visitors
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+
+    # Controls what the browser sends as referrer info
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Restricts powerful browser features from being used by third parties
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+    # Content Security Policy — allows Netlify, Google Fonts, and GSAP CDN
+    # If you add any new external scripts, add their domain to script-src
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data:;
+      connect-src 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+    """
+
+# ── Redirects ─────────────────────────────────────────────────
+# Clean URLs — /contact instead of /contact.html
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 301
+
+[[redirects]]
+  from = "/thank-you"
+  to = "/thank-you.html"
+  status = 301
